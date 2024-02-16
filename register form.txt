@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Form Validation</title>
+  <style>
+    .form-group {
+      display: block;
+      margin-bottom: 20px;
+    }
+
+    .error {
+      border: 2px solid red;
+    }
+
+    .error-message {
+      color: red;
+      display: none;
+    }
+
+    .error.active + .error-message {
+      display: block;
+    
+    }
+
+
+    /* Style for the Submit button (blue background) */
+    input[type="submit"] {
+      background-color: blue;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* Style for the Reset button (yellow background) */
+    input[type="reset"] {
+      background-color: yellow;
+      color: black;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+    }
+
+  </style>
+  <script>
+    function validateForm() {
+      var fullNameInput = document.forms["myForm"]["full_name"];
+      var usernameInput = document.forms["myForm"]["username"];
+      var emailInput = document.forms["myForm"]["email"];
+      var passwordInput = document.forms["myForm"]["password"];
+      var confirmPasswordInput = document.forms["myForm"]["confirm_password"];
+      var termsConditionsInput = document.forms["myForm"]["terms_conditions"];
+      
+      // Reset input styles and error messages
+      var inputs = [fullNameInput, usernameInput, emailInput, passwordInput, confirmPasswordInput];
+      for (var i = 0; i < inputs.length; i++) {
+        inputs[i].classList.remove("error");
+        var errorId = inputs[i].id + "_error";
+        var errorElement = document.getElementById(errorId);
+        if (errorElement) {
+          errorElement.textContent = "";
+          errorElement.style.display = "none";
+        }
+      }
+
+      var fullName = fullNameInput.value;
+      var username = usernameInput.value;
+      var email = emailInput.value;
+      var password = passwordInput.value;
+      var confirmPassword = confirmPasswordInput.value;
+      var termsConditions = termsConditionsInput.checked;
+      var isValid = true;
+
+      if (fullName == "") {
+        fullNameInput.classList.add("error");
+        var fullNameError = document.getElementById("full_name_error");
+        fullNameError.textContent = "Full Name is required";
+        fullNameError.style.display = "block";
+        isValid = false;
+      }
+
+      if (username == "") {
+        usernameInput.classList.add("error");
+        var usernameError = document.getElementById("username_error");
+        usernameError.textContent = "Username is required";
+        usernameError.style.display = "block";
+        isValid = false;
+      }
+
+      if (email == "") {
+        emailInput.classList.add("error");
+        var emailError = document.getElementById("email_error");
+        emailError.textContent = "Email is required";
+        emailError.style.display = "block";
+        isValid = false;
+      }
+
+      if (password == "") {
+        passwordInput.classList.add("error");
+        var passwordError = document.getElementById("password_error");
+        passwordError.textContent = "Password is required";
+        passwordError.style.display = "block";
+        isValid = false;
+      } else if (password.length < 6) {
+        passwordInput.classList.add("error");
+        var passwordError = document.getElementById("password_error");
+        passwordError.textContent = "Password must be at least 6 characters long";
+        passwordError.style.display = "block";
+        isValid = false;
+      }
+
+      if (confirmPassword == "") {
+        confirmPasswordInput.classList.add("error");
+        var confirmPasswordError = document.getElementById("confirm_password_error");
+        confirmPasswordError.textContent = "Confirm Password is required";
+        confirmPasswordError.style.display = "block";
+        isValid = false;
+      }
+
+      if (password !== confirmPassword) {
+        passwordInput.classList.add("error");
+        confirmPasswordInput.classList.add("error");
+        var passwordError = document.getElementById("password_error");
+        passwordError.textContent = "Passwords do not match";
+        passwordError.style.display = "block";
+        isValid = false;
+      }
+
+      if (!termsConditions) {
+        var termsConditionsError = document.getElementById("terms_conditions_error");
+        termsConditionsError.textContent = "You must agree to the Terms and Conditions";
+        termsConditionsError.style.display = "block";
+        isValid = false;
+      }
+
+      // You can add more validation rules here, such as checking email format.
+
+      return isValid;
+    }
+  </script>
+</head>
+<body>
+  <form name="myForm" onsubmit="return validateForm()" method="post">
+    <div class="form-group">
+      <label for="full_name">Full Name</label><br>
+      <input type="text" name="full_name" id="full_name">
+      <div id="full_name_error" class="error-message"></div>
+    </div>
+    
+    <div class="form-group">
+      <label for="username">Username</label><br>
+      <input type="text" name="username" id="username">
+      <div id="username_error" class="error-message"></div>
+    </div>
+    
+    <div class="form-group">
+      <label for="email">Email</label><br>
+      <input type="text" name="email" id="email">
+      <div id="email_error" class "error-message"></div>
+    </div>
+    
+    <div class="form-group">
+      <label for="password">Password</label><br>
+      <input type="password" name="password" id="password">
+      <div id="password_error" class="error-message"></div>
+    </div>
+    
+    <div class="form-group">
+      <label for="confirm_password">Confirm Password</label><br>
+      <input type="password" name="confirm_password" id="confirm_password">
+      <div id="confirm_password_error" class="error-message"></div>
+    </div>
+    
+    <div class="form-group">
+      <input type="checkbox" name="terms_conditions" id="terms_conditions">
+      <label for="terms_conditions">I have read and agree to the Terms </label>
+      <div id="terms_conditions_error" class="error-message"></div>
+    </div>
+
+    	<input type="submit" value="Register">
+         
+    	<input type="reset" value="Reset">
+  </form>
+</body>
+</html>
